@@ -22,6 +22,8 @@ class plugin_medalcate_home extends plugin_medalcate
             return !empty($str);
         }
 
+		if($_GET['action']=='log') return '';
+        
         $medals = C::t('forum_medal')->fetch_all_data(1);
         $medalcates = C::t('#medalcate#medalcate')->fetch_all();
         $jsvars = '';
