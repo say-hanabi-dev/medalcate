@@ -22,8 +22,8 @@ class plugin_medalcate_home extends plugin_medalcate
             return !empty($str);
         }
 
-		if($_GET['action']=='log') return '';
-        
+        if ($_GET['action'] == 'log') return '';
+
         $medals = C::t('forum_medal')->fetch_all_data(1);
         $medalcates = C::t('#medalcate#medalcate')->fetch_all();
         $jsvars = '';
@@ -48,17 +48,19 @@ class plugin_medalcate_home extends plugin_medalcate
         $jsvars .= 'medalcates=[' . $catestr . '];';
         // Show Selects
         $selectstr = '选择分组: ';
-        $selectstr .= '<select onchange="change_medalcate(this.options[this.options.selectedIndex].value)">';
+        $selectstr .= <<<EOF
+        <select style="-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);box-shadow: inset 0 1px 1px rgba(0,0,0,.075);font-size: 15px;font-weight: 600;background: rgba(255,255,255,0.4);border:1px solid rgba(0,0,0,0.4);cursor:pointer;padding:5px;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;"onchange="change_medalcate(this.options[this.options.selectedIndex].value)">
+EOF;
         $selectstr .= '<option value ="-1">全部</option>';
         foreach ($medalcates as $cate) {
             $selectstr .= '<option value="' . $cate['cateid'] . '">' . $cate['catename'] . '</option>';
         }
         $selectstr .= '</select>';
 
-        $jsvars .= "selectstr='".$selectstr."';";
+        $jsvars .= "selectstr='" . $selectstr . "';";
         // JS Functions
-        $jsfunctions=<<<EOF
-        DEBUG=1
+        $jsfunctions = <<<EOF
+        DEBUG=0
         function l(str){
             if(DEBUG) console.log(str);
         }
@@ -105,11 +107,12 @@ class plugin_medalcate_home extends plugin_medalcate
             ct=document.getElementById("ct");
             mn=ct.firstElementChild;
             bmbw0=mn.firstElementChild;
-            mt=bmbw0.firstElementChild;
-            l(mt);
+            ul1=bmbw0.lastElementChild;
+            l(ul1);
             var div_select=document.createElement('div');
+            div_select.style = 'font-size: 15px;font-weight: 600;';
             div_select.innerHTML=selectstr;
-            bmbw0.insertBefore(div_select, mt);
+            bmbw0.insertBefore(div_select, ul1.previousSibling.previousSibling);
         }
 EOF;
 
